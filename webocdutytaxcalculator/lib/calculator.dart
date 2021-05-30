@@ -131,7 +131,7 @@ class _calculatorState extends State<calculator> {
     calculate();
   }
 
-  Widget inputField(label,controller,hint,suffix) {
+  Widget inputField(label,controller,hint) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(top: 2, bottom: 2, right: 8, left: 8),
@@ -152,9 +152,6 @@ class _calculatorState extends State<calculator> {
               fillColor: Colors.grey,
               labelText: label,
               labelStyle: TextStyle(fontSize: 14),
-              //prefixIcon: Icon(Icons.calculate_outlined),
-              //suffixIcon: Container(margin: EdgeInsets.only(top:12), padding: EdgeInsets.all(5),child: Text(suffix, style: TextStyle(color: Colors.grey),),),
-              //suffixStyle: TextStyle(color: Colors.grey),
             ),
             keyboardType: TextInputType.number,
             onChanged: (String value){
@@ -188,21 +185,21 @@ class _calculatorState extends State<calculator> {
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[              
-              inputField("Total Import Value (In PKR)",input1,1,"Fixed Value"),
+              inputField("Total Import Value (Fixed Value In PKR)",input1,1),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Leviable Duties:", style: TextStyle(fontSize: 14, color: Colors.blueGrey),textAlign: TextAlign.left,),
               ),
               SizedBox(height: 5,),
-              inputField("Stamp Duty",input2,2,"Fixed Value"),
-              inputField("Duty/Tax/Surcharge",input3,3,"Fixed Value"),
-              inputField("Custom Duty (CD)",input4,4,"Percentage (%)"),
-              inputField("Sales Tax (ST)",input5,5,"Percentage (%)"),
-              inputField("Additional Sales Tax (AddST)",input6,6,"Percentage (%)"),
-              inputField("Regulatory Duty (RD)",input7,7,"Percentage (%)"),
-              inputField("Federal Excise Duty (FED)",input8,8,"Percentage (%)"),
-              inputField("Income Tax (IT)",input9,9,"Percentage (%)"),
-              inputField("Additional Custom Duty (AddCD)",input10,10,"Percentage (%)"),
+              inputField("Stamp Duty (Fixed Value)",input2,2),
+              inputField("Duty/Tax/Surcharge (Fixed Value)",input3,3),
+              inputField("Custom Duty (CD) %",input4,4),
+              inputField("Sales Tax (ST) %",input5,5),
+              inputField("Additional Sales Tax (AddST) %",input6,6),
+              inputField("Regulatory Duty (RD) %",input7,7),
+              inputField("Federal Excise Duty (FED) %",input8,8),
+              inputField("Income Tax (IT) %",input9,9),
+              inputField("Additional Custom Duty (AddCD) %",input10,10),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Total in PAK Rupee:", style: TextStyle(fontSize: 14, color: Colors.blueGrey),textAlign: TextAlign.left,),
