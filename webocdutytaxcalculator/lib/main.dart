@@ -26,17 +26,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Tab> tabs = [
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 1",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 2",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 3",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 4",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 5",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 6",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 7",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 8",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 9",),
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 10",),    
-    Tab(icon: Icon(Icons.calculate_outlined), text: "Item 11",),
+    Tab(text: "Item 1",),
+    Tab(text: "Item 2",),
+    Tab(text: "Item 3",),
+    Tab(text: "Item 4",),
+    Tab(text: "Item 5",),
+    Tab(text: "Item 6",),
+    Tab(text: "Item 7",),
+    Tab(text: "Item 8",),
+    Tab(text: "Item 9",),
+    Tab(text: "Item 10",),    
+    Tab(text: "Item 11",),
   ];
   List<Widget> tabBarView = [
     calculator(tab: 1),
@@ -72,3 +72,4 @@ class _MyHomePageState extends State<MyHomePage> {
       );
   }
 }
+

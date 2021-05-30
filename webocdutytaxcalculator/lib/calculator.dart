@@ -62,13 +62,13 @@ class _calculatorState extends State<calculator> {
     var value9Fixed   = (((value1Fixed+value4Fixed+value5Fixed+value6Fixed+value7Fixed+value8Fixed+value10Fixed)/100)*value9);
 
     setState(() {
-      hints[4] = "Amount Leviable in PKR: ${value4Fixed.toStringAsFixed(2)}";
-      hints[5] = "Amount Leviable in PKR: ${value5Fixed.toStringAsFixed(2)}";
-      hints[6] = "Amount Leviable in PKR: ${value6Fixed.toStringAsFixed(2)}";
-      hints[7] = "Amount Leviable in PKR: ${value7Fixed.toStringAsFixed(2)}";
-      hints[8] = "Amount Leviable in PKR: ${value8Fixed.toStringAsFixed(2)}";
-      hints[9] = "Amount Leviable in PKR: ${value9Fixed.toStringAsFixed(2)}";
-      hints[10] = "Amount Leviable in PKR: ${value10Fixed.toStringAsFixed(2)}";
+      hints[4] = value4Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[5] = value5Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[6] = value6Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[7] = value7Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[8] = value8Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[9] = value9Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[10] = value10Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
 
       _total = (value2Fixed+value3Fixed+value4Fixed+value5Fixed+value6Fixed+value7Fixed+value8Fixed+value9Fixed+value10Fixed).toStringAsFixed(2);
 
@@ -134,31 +134,43 @@ class _calculatorState extends State<calculator> {
   Widget inputField(label,controller,hint,suffix) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(2),
-      margin: EdgeInsets.only(bottom: 5),
+      padding: EdgeInsets.only(top: 2, bottom: 2, right: 8, left: 8),
+      margin: EdgeInsets.only(bottom: 4),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(4),
         color: Color(0xffeeeeee),
       ),
-      child: TextField(
-        controller: controller,
-        style: TextStyle(fontSize: 18),
-        decoration: new InputDecoration(
-          contentPadding: EdgeInsets.all(0),
-          fillColor: Colors.grey,
-          labelText: label,
-          prefixIcon: Icon(Icons.calculate_outlined),
-          suffixIcon: Container(margin: EdgeInsets.only(top:12), padding: EdgeInsets.all(5),child: Text(suffix, style: TextStyle(color: Colors.grey),),),
-          suffixStyle: TextStyle(color: Colors.grey),
-          helperText: (hints[hint] == "") ? null : hints[hint],
-          helperStyle: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-        keyboardType: TextInputType.number,
-        onChanged: (String value){
-          saveValue(hint,value);
-          calculate();
-        },
-      ),
+      child: Column(
+        children: [
+          TextField(
+            controller: controller,
+            style: TextStyle(fontSize: 16),
+            decoration: new InputDecoration(
+              //isCollapsed: true,            
+              contentPadding: EdgeInsets.all(0),
+              isDense: true,
+              fillColor: Colors.grey,
+              labelText: label,
+              labelStyle: TextStyle(fontSize: 14),
+              //prefixIcon: Icon(Icons.calculate_outlined),
+              //suffixIcon: Container(margin: EdgeInsets.only(top:12), padding: EdgeInsets.all(5),child: Text(suffix, style: TextStyle(color: Colors.grey),),),
+              //suffixStyle: TextStyle(color: Colors.grey),
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (String value){
+              saveValue(hint,value);
+              calculate();
+            },
+          ),
+          (hints[hint] == "") ? Container(height: 0, width: 0,) : Row(
+            children: [
+              Text("Amount Leviable (PKR):", style: TextStyle(color: Colors.black, fontSize: 13),),
+              Spacer(),
+              Text("${hints[hint]} /-", style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),)
+            ],
+          )
+        ],
+      )
     );
   }
 
@@ -172,7 +184,7 @@ class _calculatorState extends State<calculator> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.all(6),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[              
@@ -182,7 +194,7 @@ class _calculatorState extends State<calculator> {
                 child: Text("Leviable Duties:", style: TextStyle(fontSize: 14, color: Colors.blueGrey),textAlign: TextAlign.left,),
               ),
               SizedBox(height: 5,),
-              inputField("Sindh Stamp Duty",input2,2,"Fixed Value"),
+              inputField("Stamp Duty",input2,2,"Fixed Value"),
               inputField("Duty/Tax/Surcharge",input3,3,"Fixed Value"),
               inputField("Custom Duty (CD)",input4,4,"Percentage (%)"),
               inputField("Sales Tax (ST)",input5,5,"Percentage (%)"),
@@ -197,47 +209,57 @@ class _calculatorState extends State<calculator> {
               ),              
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(top:2, bottom:2, left:6, right:6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.blueGrey,
                 ),
-                child:  Text(_total, style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("$_total /-", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+                    RaisedButton(
+                      padding: EdgeInsets.all(0),
+                      color: Colors.redAccent,
+                      onPressed: (){
+                        return // flutter defined function
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              // return object of type Dialog
+                              return AlertDialog(
+                                content: new Text("Clear values ?"),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    child: new Text("Back"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  new FlatButton(
+                                    child: new Text("Yes"),
+                                    onPressed: () {
+                                      clearSavedValues();
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  
+                                ],
+                              );
+                            },
+                          );
+
+                      },
+                      child: Text("Clear Values", style: TextStyle(color: Colors.white),),
+                    )
+                  ],
+                )
+                
+                
+                
               ),
               SizedBox(height: 10,),
-              RaisedButton(
-                color: Colors.redAccent,
-                onPressed: (){
-                  return // flutter defined function
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        // return object of type Dialog
-                        return AlertDialog(
-                          content: new Text("Clear values ?"),
-                          actions: <Widget>[
-                            new FlatButton(
-                              child: new Text("Back"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            new FlatButton(
-                              child: new Text("Yes"),
-                              onPressed: () {
-                                clearSavedValues();
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            
-                          ],
-                        );
-                      },
-                    );
-
-                },
-                child: Text("Clear Values", style: TextStyle(color: Colors.white),),
-              )
+              
 
             ],
           ),
