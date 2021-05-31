@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class calculator extends StatefulWidget {
@@ -26,19 +27,21 @@ class _calculatorState extends State<calculator> {
   final input10 = TextEditingController();
   List<String> hints = ["","","","","","","","","","",""];
 
-  String _total = "0.00";
+  String _total = "0";
 
   void calculate(){
-    var value1Fixed  = input1.text.length == 0 ? 0 : int.parse(input1.text); //TOTAL IMPORT VALUE IN PKR
-    var value2Fixed  = input2.text.length == 0 ? 0 : int.parse(input2.text); //SINDH STAMP DUTY (FIXED)
-    var value3Fixed  = input3.text.length == 0 ? 0 : int.parse(input3.text ?? 0); //DUTY/TAX/SURCHARGE (FIXED)
-    var value4  = input4.text.length == 0 ? 0 : int.parse(input4.text ?? 0); //CUSTOM DUTY (CD)
-    var value5  = input5.text.length == 0 ? 0 : int.parse(input5.text ?? 0); //SALES TAX (ST)
-    var value6  = input6.text.length == 0 ? 0 : int.parse(input6.text ?? 0); //ADDITIONAL SALES TAX (AddST)
-    var value7  = input7.text.length == 0 ? 0 : int.parse(input7.text ?? 0); //REGULATORY DUTY (RD)
-    var value8  = input8.text.length == 0 ? 0 : int.parse(input8.text ?? 0); //FEDERAL EXCISE DUTY (FED)    
-    var value9  = input9.text.length == 0 ? 0 : int.parse(input9.text ?? 0); //INCOME TAX (IT)
-    var value10 = input10.text.length == 0 ? 0 : int.parse(input10.text ?? 0); //ADDITIONAL CUSTOM DUTY (AddCD)
+    var value1Fixed  = input1.text.length == 0 ? 0 : int.parse(input1.text.replaceAll(",", "")); //TOTAL IMPORT VALUE IN PKR
+    var value2Fixed  = input2.text.length == 0 ? 0 : int.parse(input2.text.replaceAll(",", "")); //SINDH STAMP DUTY (FIXED)
+    var value3Fixed  = input3.text.length == 0 ? 0 : int.parse(input3.text.replaceAll(",", "") ?? 0); //DUTY/TAX/SURCHARGE (FIXED)
+    var value4  = input4.text.length == 0 ? 0 : double.parse(input4.text.replaceAll(",", "") ?? 0); //CUSTOM DUTY (CD)
+    var value5  = input5.text.length == 0 ? 0 : double.parse(input5.text.replaceAll(",", "") ?? 0); //SALES TAX (ST)
+    var value6  = input6.text.length == 0 ? 0 : double.parse(input6.text.replaceAll(",", "") ?? 0); //ADDITIONAL SALES TAX (AddST)
+    var value7  = input7.text.length == 0 ? 0 : double.parse(input7.text.replaceAll(",", "") ?? 0); //REGULATORY DUTY (RD)
+    var value8  = input8.text.length == 0 ? 0 : double.parse(input8.text.replaceAll(",", "") ?? 0); //FEDERAL EXCISE DUTY (FED)    
+    var value9  = input9.text.length == 0 ? 0 : double.parse(input9.text.replaceAll(",", "") ?? 0); //INCOME TAX (IT)
+    var value10 = input10.text.length == 0 ? 0 : double.parse(input10.text.replaceAll(",", "") ?? 0); //ADDITIONAL CUSTOM DUTY (AddCD)
+
+    print(value4);
 
     //4
     var value4Fixed   = (((value1Fixed)/100)*value4);
@@ -62,15 +65,17 @@ class _calculatorState extends State<calculator> {
     var value9Fixed   = (((value1Fixed+value4Fixed+value5Fixed+value6Fixed+value7Fixed+value8Fixed+value10Fixed)/100)*value9);
 
     setState(() {
-      hints[4] = value4Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[5] = value5Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[6] = value6Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[7] = value7Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[8] = value8Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[9] = value9Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
-      hints[10] = value10Fixed.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[2] = value2Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[3] = value3Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[4] = value4Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[5] = value5Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[6] = value6Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[7] = value7Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[8] = value8Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[9] = value9Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      hints[10] = value10Fixed.toStringAsFixed(0).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
 
-      _total = (value2Fixed+value3Fixed+value4Fixed+value5Fixed+value6Fixed+value7Fixed+value8Fixed+value9Fixed+value10Fixed).toStringAsFixed(2);
+      _total = (value2Fixed+value3Fixed+value4Fixed+value5Fixed+value6Fixed+value7Fixed+value8Fixed+value9Fixed+value10Fixed).toStringAsFixed(0);
 
     });
   }
@@ -131,40 +136,55 @@ class _calculatorState extends State<calculator> {
     calculate();
   }
 
-  Widget inputField(label,controller,hint) {
+  Widget inputField(label,controller,hint,hintText,double width, isFormatted) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(top: 2, bottom: 2, right: 8, left: 8),
-      margin: EdgeInsets.only(bottom: 4),
+      padding: EdgeInsets.only(top: 0, bottom: 0, right: 8, left: 8),
+      // margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Color(0xffeeeeee),
+        color: Colors.white,
       ),
       child: Column(
         children: [
-          TextField(
-            controller: controller,
-            style: TextStyle(fontSize: 16),
-            decoration: new InputDecoration(
-              //isCollapsed: true,            
-              contentPadding: EdgeInsets.all(0),
-              isDense: true,
-              fillColor: Colors.grey,
-              labelText: label,
-              labelStyle: TextStyle(fontSize: 14),
-            ),
-            keyboardType: TextInputType.number,
-            onChanged: (String value){
-              saveValue(hint,value);
-              calculate();
-            },
-          ),
-          (hints[hint] == "") ? Container(height: 0, width: 0,) : Row(
+          Row(
             children: [
-              Text("Amount Leviable (PKR):", style: TextStyle(color: Colors.black, fontSize: 13),),
+              Text(label.toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
               Spacer(),
-              Text("${hints[hint]} /-", style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),)
+              Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black)
+                ),
+                width: width,
+                child: TextField(
+                  controller: controller,
+                  inputFormatters: isFormatted ? [CustomTextInputFormatter()] : [],
+                  style: TextStyle(fontSize: 13),
+                  decoration: new InputDecoration(
+                    //isCollapsed: true,            
+                    contentPadding: EdgeInsets.all(0),
+                    isDense: true,
+                    fillColor: Colors.grey,
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    hintText: hintText,
+                    disabledBorder: InputBorder.none,
+                  ),
+                  keyboardType: TextInputType.number,
+                  onChanged: (String value){
+                    saveValue(hint,value);
+                    calculate();
+                  },
+                ),
+              )
             ],
+          ),
+          (hints[hint] == "") ? Container(height: 0, width: 0,) : Align(
+            child: Text("${hints[hint]}/-", style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),),
+            alignment: Alignment.centerRight,
           )
         ],
       )
@@ -181,29 +201,75 @@ class _calculatorState extends State<calculator> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(6),
+          padding: EdgeInsets.all(10),
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[              
-              inputField("Total Import Value (Fixed Value In PKR)",input1,1),
+            children: <Widget>[     
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 8),
+                margin: EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: Color(0xffdddddd),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text("Total Import Value".toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+                        Spacer(),
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)
+                          ),
+                          width: 125,
+                          child: TextField(
+                            controller: input1,
+                            inputFormatters: [CustomTextInputFormatter()],
+                            style: TextStyle(fontSize: 13),
+                            decoration: new InputDecoration(
+                              //isCollapsed: true,            
+                              contentPadding: EdgeInsets.all(0),
+                              isDense: true,
+                              fillColor: Colors.grey,
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              hintText: 'Enter Value (PKR)',
+                              disabledBorder: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.number,
+                            onChanged: (String value){
+                              saveValue(1,value);
+                              calculate();
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ),         
+              
               Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Leviable Duties:", style: TextStyle(fontSize: 14, color: Colors.blueGrey),textAlign: TextAlign.left,),
+                alignment: Alignment.center,
+                child: Text("DUTY & TAXES LEVIABLE (PKR) 👇", style: TextStyle(fontSize: 18, color: Colors.blueGrey, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
               ),
+              
               SizedBox(height: 5,),
-              inputField("Stamp Duty (Fixed Value)",input2,2),
-              inputField("Duty/Tax/Surcharge (Fixed Value)",input3,3),
-              inputField("Custom Duty (CD) %",input4,4),
-              inputField("Sales Tax (ST) %",input5,5),
-              inputField("Additional Sales Tax (AddST) %",input6,6),
-              inputField("Regulatory Duty (RD) %",input7,7),
-              inputField("Federal Excise Duty (FED) %",input8,8),
-              inputField("Income Tax (IT) %",input9,9),
-              inputField("Additional Custom Duty (AddCD) %",input10,10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Total in PAK Rupee:", style: TextStyle(fontSize: 14, color: Colors.blueGrey),textAlign: TextAlign.left,),
-              ),              
+              inputField("Stamp Duty",input2,2,'Fixed (if any)',125,true),
+              inputField("Duty/Tax/Surcharge",input3,3,'Fixed (if any)',125,true),
+              inputField("Custom Duty (CD)",input4,4,'%',50,false),
+              inputField("Sales Tax (ST)",input5,5,'%',50,false),
+              inputField("Add Sales Tax (AST)",input6,6,'%',50,false),
+              inputField("Regulatory Duty (RD)",input7,7,'%',50,false),
+              inputField("Federal Excise Duty (FED)",input8,8,'%',50,false),
+              inputField("Income Tax (IT)",input9,9,'%',50,false),
+              inputField("Add Custom Duty (ACD)",input10,10,'%',50,false),
+                          
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(top:2, bottom:2, left:6, right:6),
@@ -214,41 +280,25 @@ class _calculatorState extends State<calculator> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("$_total /-", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                    RaisedButton(
+                    FlatButton(
                       padding: EdgeInsets.all(0),
-                      color: Colors.redAccent,
+                      // color: Colors.redAccent,
                       onPressed: (){
-                        return // flutter defined function
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              // return object of type Dialog
-                              return AlertDialog(
-                                content: new Text("Clear values ?"),
-                                actions: <Widget>[
-                                  new FlatButton(
-                                    child: new Text("Back"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  new FlatButton(
-                                    child: new Text("Yes"),
-                                    onPressed: () {
-                                      clearSavedValues();
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  
-                                ],
-                              );
-                            },
-                          );
-
+                        clearSavedValues();
                       },
-                      child: Text("Clear Values", style: TextStyle(color: Colors.white),),
-                    )
+                      child: Text("Clear Values", style: TextStyle(color: Colors.yellow),),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Text("TOTAL", style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+                        // SizedBox(height: 5,),
+                        Text("TOTAL= ${_total.replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}/-", style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),),
+
+
+                      ],
+                    ),
+                    
                   ],
                 )
                 
@@ -262,5 +312,34 @@ class _calculatorState extends State<calculator> {
           ),
         ),
       );
+  }
+}
+
+
+class CustomTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.length == 0) {
+      return newValue.copyWith(text: '');
+    } else if (newValue.text.compareTo(oldValue.text) != 0) {
+      int selectionIndexFromTheRight =
+          newValue.text.length - newValue.selection.extentOffset;
+      List<String> chars = newValue.text.replaceAll(',', '').split('');
+      String newString = '';
+      for (int i = 0; i < chars.length; i++) {
+        if (i % 3 == 0 && i != 0) newString += ',';
+        newString += chars[i];
+      }
+
+      return TextEditingValue(
+        text: newString,
+        selection: TextSelection.collapsed(
+          offset: newString.length - selectionIndexFromTheRight,
+        ),
+      );
+    } else {
+      return newValue;
+    }
   }
 }
