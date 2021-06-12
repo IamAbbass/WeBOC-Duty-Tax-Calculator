@@ -152,7 +152,7 @@ class _calculatorState extends State<calculator> {
               Text(label.toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
               Spacer(),
               Container(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black)
                 ),
@@ -163,7 +163,7 @@ class _calculatorState extends State<calculator> {
                   style: TextStyle(fontSize: 13),
                   decoration: new InputDecoration(
                     //isCollapsed: true,            
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: EdgeInsets.all(5),
                     isDense: true,
                     fillColor: Colors.grey,
                     border: InputBorder.none,
